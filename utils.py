@@ -106,3 +106,18 @@ def run_shell(command: str) -> tuple[int, str, str]:
         exit_code = e.returncode
         
     return exit_code, stdout, stderr
+
+def install_package(package: str):
+    operating_system = detect_os()
+    if not operating_system == OperatingSystem.Linux:
+        print(f"Failed to install package `{package}`")
+        return
+
+    distro = detect_distro()
+
+    if distro == LinuxDistro.Debian11 or distro == LinuxDistro.Ubuntu20 or distro == LinuxDistro.Ubuntu22:
+        run_shell(f"DEBIAN_FRONTEND=noninteractive apt install {package} -y")
+    else:
+        print(f"Failed to install package `{package}`")
+
+
